@@ -1,8 +1,7 @@
 require('dotenv').config();
 const app = require('./api');
-const model = require('./database/models');
-const middleware = require('./database/middlewares');
 const controller = require('./database/controller');
+const middleware = require('./database/middlewares');
 
 // não remova a variável `API_PORT` ou o `listen`
 const port = process.env.API_PORT || 3000;
@@ -17,12 +16,12 @@ app.post('/login',
   middleware.loginValidation,
   controller.userLogin);
 
-app.get('/user', model.User);
 app.post('/user',
   middleware.validateDisplayName,
   middleware.validateEmail,
   middleware.validatePassword,
-  middleware.validateUniqueEmail);
+  middleware.validateUniqueEmail,
+  controller.createUser);
 
 app.use((err, _req, res, _next) => {
   if (err.message === 'connect ECONNREFUSED 127.0.0.1:3306') {
