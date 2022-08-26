@@ -1,10 +1,17 @@
 const model = require('../models');
 
 const services = {
-  userLogin: async ({ email, password }) => {
-    const user = await model.User.findOne({ where: { email } });
-    console.log('service user login - ', user);
-    console.log('passwrd ', password);
+  userLogin: async ({ email }) => {
+    const userInfo = await model.User.findOne({
+      attributes: ['email', 'password'],
+      where: { email },
+      raw: true,
+  });
+  return userInfo;
+  },
+  create: async (obj) => {
+    const newUser = await model.User.create(obj);
+    return newUser.dataValues;
   },
 };
 
