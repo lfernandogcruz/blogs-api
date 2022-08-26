@@ -12,11 +12,17 @@ app.get('/', (_request, response) => {
   response.send();
 });
 
-app.get('/login', model.User);
 app.post('/login',
   middleware.loginEmptyFieldsValidation,
   middleware.loginValidation,
   controller.userLogin);
+
+app.get('/user', model.User);
+app.post('/user',
+  middleware.validateDisplayName,
+  middleware.validateEmail,
+  middleware.validatePassword,
+  middleware.validateUniqueEmail);
 
 app.use((err, _req, res, _next) => {
   if (err.message === 'connect ECONNREFUSED 127.0.0.1:3306') {
