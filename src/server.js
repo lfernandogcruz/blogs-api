@@ -2,6 +2,7 @@ require('dotenv').config();
 const app = require('./api');
 const controller = require('./database/controller');
 const middleware = require('./database/middlewares');
+const helpers = require('./database/helpers');
 
 // não remova a variável `API_PORT` ou o `listen`
 const port = process.env.API_PORT || 3000;
@@ -16,6 +17,9 @@ app.post('/login',
   middleware.loginValidation,
   controller.userLogin);
 
+app.get('/user',
+  helpers.tokenAuth,
+  controller.findAllUser);
 app.post('/user',
   middleware.validateDisplayName,
   middleware.validateEmail,
