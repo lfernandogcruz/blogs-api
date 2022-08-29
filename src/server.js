@@ -30,6 +30,11 @@ app.post('/user',
   middleware.validateUniqueEmail,
   controller.createUser);
 
+app.post('/categories',
+  helpers.tokenAuth,
+  middleware.validateCatNameNotEmpty,
+  controller.createCategory);
+
 app.use((err, _req, res, _next) => {
   if (err.message === 'connect ECONNREFUSED 127.0.0.1:3306') {
     return res.status(500).json({ message: 'DB OFFLINE' });
