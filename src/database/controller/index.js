@@ -24,6 +24,14 @@ const controllers = {
     if (result === undefined) return res.status(404).json({ message: 'Product not found' });
     return res.status(200).json(result);
   },
+  findByIdUser: async (req, res) => {
+    const { id } = req.params;
+    const result = await services.findByIdUser(id);
+    if (result === null || result === undefined) {
+      return res.status(404).json({ message: 'User does not exist' });
+    }
+      return res.status(200).json(result);
+  },
 };
 
 module.exports = controllers;
