@@ -6,12 +6,17 @@ const services = {
       attributes: ['email', 'password'],
       where: { email },
       raw: true,
-  });
-  return userInfo;
+    });
+    return userInfo;
   },
   create: async (obj) => {
     const newUser = await model.User.create(obj);
     return newUser.dataValues;
+  },
+  findAllUser: async () => {
+    const result = await model.User.findAll({ attributes: { exclude: ['password'] } });
+    const mapped = result.map((user) => user.dataValues);
+    return mapped;
   },
 };
 
