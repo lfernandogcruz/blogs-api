@@ -14,7 +14,7 @@ const controllers = {
     const { displayName, email,
       password, image } = req.body;
     const obj = { displayName, email, password, image }; 
-    const isCreated = await services.create(obj);
+    const isCreated = await services.createUser(obj);
     if (!isCreated) return res.status(500).json({ message: 'Internal Error' });
     const token = helpers.tokenGen({ email, password });
     return res.status(201).json({ token });
@@ -31,6 +31,12 @@ const controllers = {
       return res.status(404).json({ message: 'User does not exist' });
     }
       return res.status(200).json(result);
+  },
+  createCategory: async (req, res) => {
+    const name = req.body;
+    const result = await services.createCategory(name);
+    if (!result) return res.status(500).json({ message: 'Internal Error' });
+    return res.status(201).json(result);
   },
 };
 
