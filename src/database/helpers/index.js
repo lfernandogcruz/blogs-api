@@ -10,24 +10,20 @@ const helpers = {
   },
   tokenAuth: async (req, res, next) => {
     const token = req.headers.authorization;
-    // consol/e.log('>>>> TOKEN --- ', token);
     if (!token) {
-      // console.log('>>> NOT FOUND --- ');
       return res.status(401).json({ message: 'Token not found' });
     }
     try {
-    const decoded = jwt.verify(token, JWT_SECRET);
-    // console.log('>>>> DECODED --- ', decoded);
-    const user = await models.User.findOne({ where: { email: decoded.email } });
-    // console.log('>>>> USER ---', user.dataValues.email);
-    if (!user) {
+      const decoded = jwt.verify(token, JWT_SECRET);
+      const user = await models.User.findOne({ where: { email: decoded.email } });
+      if (!user) {
+        return res.status(401).json({ message: 'Expired or invalid token' });
+      }
+      req.user = user;
+      next();
+    } catch (err) {
       return res.status(401).json({ message: 'Expired or invalid token' });
     }
-    req.user = user;
-    next();
-  } catch (err) {
-    return res.status(401).json({ message: 'Expired or invalid token' });
-  }
   },
 };
 
