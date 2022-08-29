@@ -20,6 +20,9 @@ app.post('/login',
 app.get('/user',
   helpers.tokenAuth,
   controller.findAllUser);
+app.get('/user/:id',
+  helpers.tokenAuth,
+  controller.findByIdUser);
 app.post('/user',
   middleware.validateDisplayName,
   middleware.validateEmail,
