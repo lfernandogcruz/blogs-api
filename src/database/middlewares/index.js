@@ -54,12 +54,15 @@ const middlewares = {
     }
     next();
   },
-  tokenValidation: async (req, res, next) => {
-    const { authorization } = req.header;
-    const result = console.log(authorization);
-    if (!result) return res.status(401).json({ message: 'deu ruim' });
-    next();
-  },
+  // tokenValidation: async (req, res, next) => {
+  //   const { authorization: { token } } = req.header;
+  //   console.log('>>> AUTHORIZATION --- ', token);
+  //   // const result = 
+  //   if (!token || token === undefined) {
+  //     return res.status(401).json({ message: 'Token not found' });
+  //   }
+  //   next();
+  // },
 };
 
 module.exports = middlewares;
