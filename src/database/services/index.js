@@ -18,6 +18,13 @@ const services = {
     const mapped = result.map((user) => user.dataValues);
     return mapped;
   },
+  findByIdUser: async (id) => {
+    const result = await model.User.findByPk(
+      id,
+      { attributes: { exclude: ['password'] } },
+    );
+    return result;
+  },
 };
 
 module.exports = services;
