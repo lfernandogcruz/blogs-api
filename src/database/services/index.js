@@ -9,7 +9,7 @@ const services = {
     });
     return userInfo;
   },
-  create: async (obj) => {
+  createUser: async (obj) => {
     const newUser = await model.User.create(obj);
     return newUser.dataValues;
   },
@@ -24,6 +24,10 @@ const services = {
       { attributes: { exclude: ['password'] } },
     );
     return result;
+  },
+  createCategory: async (name) => {
+    const newCat = await model.Category.create(name);
+    return newCat;
   },
 };
 
