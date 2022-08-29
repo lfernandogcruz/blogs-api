@@ -19,6 +19,11 @@ const controllers = {
     const token = helpers.tokenGen({ email, password });
     return res.status(201).json({ token });
   },
+  findAllUser: async (req, res) => {
+    const result = await services.findAllUser();
+    if (result === undefined) return res.status(404).json({ message: 'Product not found' });
+    return res.status(200).json(result);
+  },
 };
 
 module.exports = controllers;
