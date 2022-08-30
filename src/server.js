@@ -30,6 +30,9 @@ app.post('/user',
   middleware.validateUniqueEmail,
   controller.createUser);
 
+app.get('/categories',
+  helpers.tokenAuth,
+  controller.findAllCategories);
 app.post('/categories',
   helpers.tokenAuth,
   middleware.validateCatNameNotEmpty,
