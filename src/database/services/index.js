@@ -31,7 +31,7 @@ const services = {
   },
   findAllCategories: async () => {
     const result = await model.Category.findAll();
-    const mapped = result.map((user) => user.dataValues);
+    const mapped = result.map((cat) => cat.dataValues);
     return mapped;
   },
 };
