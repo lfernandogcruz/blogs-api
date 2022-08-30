@@ -29,6 +29,11 @@ const services = {
     const newCat = await model.Category.create(name);
     return newCat;
   },
+  findAllCategories: async () => {
+    const result = await model.Category.findAll();
+    const mapped = result.map((user) => user.dataValues);
+    return mapped;
+  },
 };
 
 module.exports = services;
