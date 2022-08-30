@@ -38,6 +38,11 @@ const controllers = {
     if (!result) return res.status(500).json({ message: 'Internal Error' });
     return res.status(201).json(result);
   },
+  findAllCategories: async (req, res) => {
+    const result = await services.findAllCategories();
+    if (result === undefined) return res.status(500).json({ message: 'Internal Error' });
+    return res.status(200).json(result);
+  },
 };
 
 module.exports = controllers;
