@@ -1,3 +1,9 @@
+// const Sequelize = require('sequelize');
+
+// const config = require('../config/config');
+
+// const sequelize = new Sequelize(config.development);
+
 const model = require('../models');
 
 const services = {
@@ -33,6 +39,42 @@ const services = {
     const result = await model.Category.findAll();
     const mapped = result.map((cat) => cat.dataValues);
     return mapped;
+  },
+  // createPost: async (reqObj) => {
+  //   const t = await sequelize.transaction();
+  //   try {
+  //     const today = Date.now();
+  //     const newObj = { ...reqObj, published: today, updated: today };
+  //     const post = await model.BlogPost.create(newObj, { transaction: t }).then(async () => {
+  //       // console.log('<><><><><><><>< POST - ', post);
+  //       const categIdArray = reqObj.categoryIds;
+  //       await categIdArray.forEach(async (catId) => {
+  //         await model.PostCategory.create({
+  //           postId: post.id,
+  //           categoryId: catId,
+  //         }, { transaction: t });
+  //       }).then(async () => t.commit());
+  //     });
+  //     return post;
+  //   } catch (e) {
+  //     await t.rollback();
+  //     console.log(e.message);
+  //   }
+  // },  
+  findAllPost: async () => {
+    const result = await model.BlogPost.findAll({
+      include: [{
+        model: model.User,
+        as: 'user',
+        attributes: { exclude: ['password'] },
+      }, {
+        model: model.Category,
+        as: 'categories',
+        through: { attributes: [] },
+      }],
+    });
+    // console.log('<><><><><><> RESULT - ', result);
+    return result;
   },
 };
 

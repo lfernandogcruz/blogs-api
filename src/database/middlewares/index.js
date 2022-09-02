@@ -30,7 +30,8 @@ const middlewares = {
     const { displayName } = req.body;
     if (displayName.length < 8) {
       return res.status(400).json({
-        message: '"displayName" length must be at least 8 characters long' });
+        message: '"displayName" length must be at least 8 characters long',
+      });
     }
     next();
   },
@@ -38,7 +39,8 @@ const middlewares = {
     const { password } = req.body;
     if (password.length < 6) {
       return res.status(400).json({
-        message: '"password" length must be at least 6 characters long' });
+        message: '"password" length must be at least 6 characters long',
+      });
     }
     next();
   },
@@ -61,15 +63,21 @@ const middlewares = {
     }
     next();
   },
-  // tokenValidation: async (req, res, next) => {
-  //   const { authorization: { token } } = req.header;
-  //   console.log('>>> AUTHORIZATION --- ', token);
-  //   // const result = 
-  //   if (!token || token === undefined) {
-  //     return res.status(401).json({ message: 'Token not found' });
-  //   }
-  //   next();
-  // },
+  validatePostFieldsNotEmpty: async (req, res, next) => {
+    const { title, content, categoryIds } = req.body;
+    if (!title || !content || !categoryIds || categoryIds.length === 0) {
+      return res.status(400).json({ message: 'Some required fields are missing' });
+    }
+    next();
+  },
+  validateExistingCategories: async (req, res, next) => {
+    const { categoryIds } = req.body;
+     const catList = await Promise.all(categoryIds
+      .map((cat) => model.Category.findByPk(cat)));
+    const isValid = catList.some((cat) => cat !== null);
+    if (!isValid) return res.status(400).json({ message: '"categoryIds" not found' });
+    next();
+  },
 };
 
 module.exports = middlewares;
