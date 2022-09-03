@@ -41,6 +41,9 @@ app.post('/categories',
 app.get('/post',
   helpers.tokenAuth,
   controller.findAllPost);
+app.get('/post/:id',
+  helpers.tokenAuth,
+  controller.findByIdPost);
 app.post('/post',
   helpers.tokenAuth,
   middleware.validatePostFieldsNotEmpty,
