@@ -54,6 +54,10 @@ app.put('/post/:id',
   middleware.validateExistingPostAndUserOwnership,
   middleware.validateFieldsFilledForUpdating,
   controller.updateByIdPost);
+app.delete('/post/:id',
+  helpers.tokenAuth,
+  middleware.validateExistingPostAndUserOwnership,
+  controller.slashByIdPost);
 
 app.use((err, _req, res, _next) => {
   if (err.message === 'connect ECONNREFUSED 127.0.0.1:3306') {
