@@ -98,6 +98,12 @@ const services = {
     const result = await services.findByIdPost(id);
     await result.destroy();
   },
+  slashUser: async (id) => {
+    const result = await model.User.findByPk(id);
+    console.log('<><><><><> RESULT - ', result);
+    await result.destroy();
+    console.log('<><><><><><< DESTROYED <><>M<>M<><M<><><><><');
+  },
 };
 
 module.exports = services;
