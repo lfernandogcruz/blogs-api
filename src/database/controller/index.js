@@ -63,6 +63,16 @@ const controllers = {
     }
       return res.status(200).json(result);
   },
+  updateByIdPost: async (req, res) => {
+    const { id } = req.params;
+    const { title, content } = req.body;
+    const data = { id, title, content };
+    const result = await services.updateByIdPost(data);
+    if (result === null || result === undefined) {
+      return res.status(404).json({ message: 'Post was not upadated' });
+    }
+    return res.status(200).json(result);
+  },
 };
 
 module.exports = controllers;
