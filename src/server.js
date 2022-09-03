@@ -41,11 +41,11 @@ app.post('/categories',
 app.get('/post',
   helpers.tokenAuth,
   controller.findAllPost);
-// app.post('/post',
-//   helpers.tokenAuth,
-//   middleware.validatePostFieldsNotEmpty,
-//   middleware.validateExistingCategories,
-//   controller.createPost);
+app.post('/post',
+  helpers.tokenAuth,
+  middleware.validatePostFieldsNotEmpty,
+  middleware.validateExistingCategories,
+  controller.createPost);
 
 app.use((err, _req, res, _next) => {
   if (err.message === 'connect ECONNREFUSED 127.0.0.1:3306') {
