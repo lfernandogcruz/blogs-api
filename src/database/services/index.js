@@ -25,10 +25,9 @@ const services = {
     return mapped;
   },
   findByIdUser: async (id) => {
-    const result = await model.User.findByPk(
-      id,
-      { attributes: { exclude: ['password'] } },
-    );
+    const result = await model.User.findByPk(id, {
+      attributes: { exclude: ['password'] },
+    });
     return result;
   },
   createCategory: async (name) => {
@@ -40,38 +39,40 @@ const services = {
     const mapped = result.map((cat) => cat.dataValues);
     return mapped;
   },
-  // createPost: async (reqObj) => {
-  //   const t = await sequelize.transaction();
-  //   try {
-  //     const today = Date.now();
-  //     const newObj = { ...reqObj, published: today, updated: today };
-  //     const post = await model.BlogPost.create(newObj, { transaction: t }).then(async () => {
-  //       // console.log('<><><><><><><>< POST - ', post);
-  //       const categIdArray = reqObj.categoryIds;
-  //       await categIdArray.forEach(async (catId) => {
-  //         await model.PostCategory.create({
-  //           postId: post.id,
-  //           categoryId: catId,
-  //         }, { transaction: t });
-  //       }).then(async () => t.commit());
-  //     });
-  //     return post;
-  //   } catch (e) {
-  //     await t.rollback();
-  //     console.log(e.message);
-  //   }
-  // },  
+  createPost: async (reqObj) => {
+    const t = await model.sequelize.transaction();
+    try {
+      const today = Date.now();
+      const newObj = { ...reqObj, published: today, updated: today };
+      const blogPost = await model.BlogPost.create(newObj, { transaction: t });
+      await Promise.all(
+        reqObj.categoryIds.map((id) => {
+          const postCat = model.PostCategory.create({ postId: blogPost.id, categoryId: id },
+            { transaction: t });
+            return postCat;
+        }),
+      );
+      t.commit();
+      return blogPost;
+    } catch (e) {
+      await t.rollback();
+      console.log(e.message);
+    }
+  },
   findAllPost: async () => {
     const result = await model.BlogPost.findAll({
-      include: [{
-        model: model.User,
-        as: 'user',
-        attributes: { exclude: ['password'] },
-      }, {
-        model: model.Category,
-        as: 'categories',
-        through: { attributes: [] },
-      }],
+      include: [
+        {
+          model: model.User,
+          as: 'user',
+          attributes: { exclude: ['password'] },
+        },
+        {
+          model: model.Category,
+          as: 'categories',
+          through: { attributes: [] },
+        },
+      ],
     });
     // console.log('<><><><><><> RESULT - ', result);
     return result;
