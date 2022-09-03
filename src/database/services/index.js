@@ -93,6 +93,26 @@ const services = {
     });
     return result;
   },
+  updateByIdPost: async (data) => {
+    const { id, title, content } = data;
+    const result = await model.BlogPost.findByPk(id, {
+      include: [
+        {
+          model: model.User,
+          as: 'user',
+          attributes: { exclude: ['password'] },
+        },
+        {
+          model: model.Category,
+          as: 'categories',
+          through: { attributes: [] },
+        },
+      ],
+    });
+    result.update({ title, content });
+    await result.save();
+    return result;
+  },
 };
 
 module.exports = services;
