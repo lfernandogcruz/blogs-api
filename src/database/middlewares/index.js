@@ -83,7 +83,7 @@ const middlewares = {
     const { id } = req.params;
     const { id: userId } = req.user;
     const postExists = await model.BlogPost.findByPk(id);
-    if (!postExists) return res.status(400).json({ message: 'Blog Post does not exists' });
+    if (!postExists) return res.status(404).json({ message: 'Post does not exist' });
     if (postExists.userId !== userId) return res.status(401).json({ message: 'Unauthorized user' });
     next();
   },
