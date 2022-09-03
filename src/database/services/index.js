@@ -95,20 +95,7 @@ const services = {
   },
   updateByIdPost: async (data) => {
     const { id, title, content } = data;
-    const result = await model.BlogPost.findByPk(id, {
-      include: [
-        {
-          model: model.User,
-          as: 'user',
-          attributes: { exclude: ['password'] },
-        },
-        {
-          model: model.Category,
-          as: 'categories',
-          through: { attributes: [] },
-        },
-      ],
-    });
+    const result = await services.findByIdPost(id);
     result.update({ title, content });
     await result.save();
     return result;
