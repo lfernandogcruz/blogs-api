@@ -55,6 +55,14 @@ const controllers = {
     if (result === undefined) return res.status(500).json({ message: 'Internal Error' });
     return res.status(200).json(result);
   },
+  findByIdPost: async (req, res) => {
+    const { id } = req.params;
+    const result = await services.findByIdPost(id);
+    if (result === null || result === undefined) {
+      return res.status(404).json({ message: 'Post does not exist' });
+    }
+      return res.status(200).json(result);
+  },
 };
 
 module.exports = controllers;
