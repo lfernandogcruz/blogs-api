@@ -74,7 +74,6 @@ const services = {
         },
       ],
     });
-    // console.log('<><><><><><> RESULT - ', result);
     return result;
   },
 };
