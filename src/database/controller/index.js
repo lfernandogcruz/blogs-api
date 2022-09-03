@@ -43,13 +43,13 @@ const controllers = {
     if (result === undefined) return res.status(500).json({ message: 'Internal Error' });
     return res.status(200).json(result);
   },
-  // createPost: async (req, res) => {
-  //   const { title, content, categoryIds } = req.body;
-  //   const { id } = req.user;
-  //   const reqObj = { title, content, categoryIds, userId: id };
-  //   const result = await services.createPost(reqObj);
-  //   return res.status(201).json(result);
-  // },
+  createPost: async (req, res) => {
+    const { title, content, categoryIds } = req.body;
+    const { id } = req.user;
+    const reqObj = { title, content, categoryIds, userId: id };
+    const result = await services.createPost(reqObj);
+    return res.status(201).json(result);
+  },
   findAllPost: async (_req, res) => {
     const result = await services.findAllPost();
     if (result === undefined) return res.status(500).json({ message: 'Internal Error' });
