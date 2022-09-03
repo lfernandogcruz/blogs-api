@@ -76,6 +76,23 @@ const services = {
     });
     return result;
   },
+  findByIdPost: async (id) => {
+    const result = await model.BlogPost.findByPk(id, {
+      include: [
+        {
+          model: model.User,
+          as: 'user',
+          attributes: { exclude: ['password'] },
+        },
+        {
+          model: model.Category,
+          as: 'categories',
+          through: { attributes: [] },
+        },
+      ],
+    });
+    return result;
+  },
 };
 
 module.exports = services;
