@@ -78,6 +78,12 @@ const controllers = {
     await services.slashByIdPost(id);
     return res.status(204).end();
   },
+  slashUser: async (req, res) => {
+    const { id } = req.user;
+    await services.slashUser(id);
+    console.log('<><><><><><><><><> DONE DONE DONE <><><><><><><><>>');
+    return res.status(204).end();
+  },
 };
 
 module.exports = controllers;
