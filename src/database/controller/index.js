@@ -73,6 +73,11 @@ const controllers = {
     }
     return res.status(200).json(result);
   },
+  slashByIdPost: async (req, res) => {
+    const { id } = req.params;
+    await services.slashByIdPost(id);
+    return res.status(204).end();
+  },
 };
 
 module.exports = controllers;
