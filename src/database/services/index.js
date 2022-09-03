@@ -1,9 +1,3 @@
-// const Sequelize = require('sequelize');
-
-// const config = require('../config/config');
-
-// const sequelize = new Sequelize(config.development);
-
 const model = require('../models');
 
 const services = {
@@ -99,6 +93,10 @@ const services = {
     result.update({ title, content });
     await result.save();
     return result;
+  },
+  slashByIdPost: async (id) => {
+    const result = await services.findByIdPost(id);
+    await result.destroy();
   },
 };
 
