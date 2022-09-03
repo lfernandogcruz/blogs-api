@@ -72,10 +72,26 @@ const middlewares = {
   },
   validateExistingCategories: async (req, res, next) => {
     const { categoryIds } = req.body;
-     const catList = await Promise.all(categoryIds
-      .map((cat) => model.Category.findByPk(cat)));
+    const catList = await Promise.all(
+      categoryIds.map((cat) => model.Category.findByPk(cat)),
+    );
     const isValid = catList.some((cat) => cat !== null);
     if (!isValid) return res.status(400).json({ message: '"categoryIds" not found' });
+    next();
+  },
+  validateExistingPostAndUserOwnership: async (req, res, next) => {
+    const { id } = req.params;
+    const { id: userId } = req.user;
+    const postExists = await model.BlogPost.findByPk(id);
+    if (!postExists) return res.status(400).json({ message: 'Blog Post does not exists' });
+    if (postExists.userId !== userId) return res.status(401).json({ message: 'Unauthorized user' });
+    next();
+  },
+  validateFieldsFilledForUpdating: async (req, res, next) => {
+    const { title, content } = req.body;
+    if (!title || !content) {
+      return res.status(400).json({ message: 'Some required fields are missing' });
+    }
     next();
   },
 };
