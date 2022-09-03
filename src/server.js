@@ -29,6 +29,9 @@ app.post('/user',
   middleware.validatePassword,
   middleware.validateUniqueEmail,
   controller.createUser);
+app.delete('/user/me',
+  helpers.tokenAuth,
+  controller.slashUser);
 
 app.get('/categories',
   helpers.tokenAuth,
