@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const model = require('../models');
 
 const services = {
@@ -100,9 +101,22 @@ const services = {
   },
   slashUser: async (id) => {
     const result = await model.User.findByPk(id);
-    console.log('<><><><><> RESULT - ', result);
     await result.destroy();
-    console.log('<><><><><><< DESTROYED <><>M<>M<><M<><><><><');
+  },
+  searchPost: async (q) => {
+    console.log('<><><><><><>>< Q Q Q Q Q Q - ', q);
+    if (q.length === 0) return services.findAllPost();
+    const result = await model.BlogPost.findAll({
+      where: { [Op.or]: {
+        title: { [Op.substring]: q },
+        content: { [Op.substring]: q },
+      } },
+      raw: true,
+    });
+    const remount = await Promise.all(result.map((post) => services.findByIdPost(post.id, {
+      attributes: ['BlogPost'] })));
+    console.log('<><><><><>< REMOUNT --- ', remount);
+    return remount;
   },
 };
 
