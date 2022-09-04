@@ -81,8 +81,13 @@ const controllers = {
   slashUser: async (req, res) => {
     const { id } = req.user;
     await services.slashUser(id);
-    console.log('<><><><><><><><><> DONE DONE DONE <><><><><><><><>>');
     return res.status(204).end();
+  },
+  searchPost: async (req, res) => {
+    const { q } = req.query;
+    const result = await services.searchPost(q);
+    console.log('<><><><><> RESULT - ', result);
+    return res.status(200).json(result);
   },
 };
 
