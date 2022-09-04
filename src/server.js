@@ -16,13 +16,13 @@ app.post('/login',
   middleware.loginEmptyFieldsValidation,
   middleware.loginValidation,
   controller.userLogin);
-
-app.get('/user',
-  helpers.tokenAuth,
-  controller.findAllUser);
+  
 app.get('/user/:id',
   helpers.tokenAuth,
   controller.findByIdUser);
+app.get('/user',
+  helpers.tokenAuth,
+  controller.findAllUser);
 app.post('/user',
   middleware.validateDisplayName,
   middleware.validateEmail,
@@ -41,12 +41,15 @@ app.post('/categories',
   middleware.validateCatNameNotEmpty,
   controller.createCategory);
 
-app.get('/post',
+app.get('/post/search?',
   helpers.tokenAuth,
-  controller.findAllPost);
+  controller.searchPost);
 app.get('/post/:id',
   helpers.tokenAuth,
   controller.findByIdPost);
+app.get('/post',
+  helpers.tokenAuth,
+  controller.findAllPost);
 app.post('/post',
   helpers.tokenAuth,
   middleware.validatePostFieldsNotEmpty,
