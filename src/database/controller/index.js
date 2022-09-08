@@ -86,7 +86,6 @@ const controllers = {
   searchPost: async (req, res) => {
     const { q } = req.query;
     const result = await services.searchPost(q);
-    console.log('<><><><><> RESULT - ', result);
     return res.status(200).json(result);
   },
 };
