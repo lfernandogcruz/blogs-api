@@ -104,19 +104,23 @@ const services = {
     await result.destroy();
   },
   searchPost: async (q) => {
-    console.log('<><><><><><>>< Q Q Q Q Q Q - ', q);
     if (q.length === 0) return services.findAllPost();
     const result = await model.BlogPost.findAll({
       where: { [Op.or]: {
         title: { [Op.substring]: q },
         content: { [Op.substring]: q },
       } },
-      raw: true,
-    });
-    const remount = await Promise.all(result.map((post) => services.findByIdPost(post.id, {
-      attributes: ['BlogPost'] })));
-    console.log('<><><><><>< REMOUNT --- ', remount);
-    return remount;
+      include: [{
+          model: model.User,
+          as: 'user',
+          attributes: { exclude: ['password'] },
+        }, {
+          model: model.Category,
+          as: 'categories',
+          through: { attributes: [] },
+        },
+      ] });
+    return result;
   },
 };
 
