@@ -28,6 +28,7 @@ module.exports = {
         allowNull: false,
         foreignKey: true,
         onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
         references: {
           model: 'Users',
           key: 'id',
